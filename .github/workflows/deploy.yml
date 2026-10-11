@@ -1,0 +1,44 @@
+name: Production deployment
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    environment: production
+    defaults:
+      run:
+        working-directory: apps/portfolio
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: apps/portfolio/package-lock.json
+      - run: npm ci
+      - run: npm run quality
+      - run: npm run audit:dependencies
+      - run: npm run build
+      - name: Apply additive migrations
+        run: npm run db:migrate
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      - name: Deploy immutable Worker build
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: apps/portfolio
+          command: deploy --config dist/server/wrangler.json
+      - name: Production smoke
+        run: npm run operations:smoke -- "${{ vars.PRODUCTION_ORIGIN }}"

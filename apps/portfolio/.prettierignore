@@ -1,0 +1,10 @@
+node_modules
+dist
+.next
+.vinext
+.wrangler
+.sites-runtime
+coverage
+public
+drizzle/meta
+.lighthouse-*.json
