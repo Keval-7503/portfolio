@@ -1,6 +1,6 @@
 # Project Memory
 
-Last updated: 2026-10-09
+Last updated: 2026-10-15
 
 ## Confirmed requirements
 
@@ -16,7 +16,7 @@ Last updated: 2026-10-09
 
 - Workspace was empty and not a Git repository when inspected.
 - Architecture/requirements documentation was created in the first increment.
-- `apps/portfolio` now contains a Cloudflare-compatible Vinext/Next.js TypeScript application, dependency lockfile, environment contract, Neon PostgreSQL helper, and Better Auth dependency. Neon is connected locally; no deployment exists.
+- `apps/portfolio` contains a Cloudflare-compatible Vinext/Next.js TypeScript application with the public site, protected single-owner admin, GitHub synchronization, document/resume lifecycle, contact inbox, and approval-only AI drafting. Neon is connected; no production deployment exists.
 - The first responsive public homepage slice is implemented with truthful empty states, a custom favicon, and an original generated workbench robot asset.
 - The owner supplied and public API verification confirmed GitHub login `Keval-7503`, stable account ID `80451128`, and nine public owned repositories on 2026-10-09. The homepage prefers synchronized database records and retains the verified snapshot as a fail-safe.
 - The owner created a Neon database, applied the first migration, and securely verified all five expected tables. The first credential-free GitHub bootstrap sync stored one account, nine repositories, nine published projects, zero missing repositories, and a successful run.
@@ -29,7 +29,7 @@ Last updated: 2026-10-09
 - The runtime now enforces CSP, frame denial, nosniff, referrer and permissions policies, plus private/no-store caching for admin/auth routes. Central helpers reject cross-origin/originless browser mutations and restrict external/provider URLs. HSTS remains intentionally gated on a verified production HTTPS domain; CSP nonce hardening remains.
 - Admin project records now have protected edit pages and a validated same-origin PATCH boundary for owner-controlled title, category, summary, safe Markdown, featured/order, publication, and visibility fields. Anonymous/cross-origin denial and production build passed; authenticated browser save, revisions, and audit records remain.
 - Durable revision and audit tables are now live. Project edits and restores use one database batch to snapshot the previous owner-controlled state, update the record, and append an attributed audit event containing identifiers and changed field names but no content. The editor shows up to 25 revisions and supports guarded restore; an intentional owner edit is still needed for authenticated integrity evidence.
-- No private content, write-capable external account connection, or deployment exists yet. Local runtime credentials remain in ignored environment storage.
+- The source is published at `https://github.com/Keval-7503/portfolio`. The first hosted quality run found required Vite helper source omitted by the root ignore rule; the correction is ready for replacement CI. Local runtime credentials remain in ignored environment storage and no production deployment exists.
 
 ## Architecture decisions
 
@@ -59,7 +59,7 @@ Last updated: 2026-10-09
 - Do not store secrets or sensitive raw content in repository documentation or logs.
 - Do not mark a task verified without actual evidence.
 - Current security reference is OWASP ASVS 5.0.0; no blanket compliance claim.
-- The repeat npm audit has four moderate findings in the Drizzle Kit development-tool chain; no critical/high finding remains. Do not expose development servers beyond loopback and reassess before deployment.
+- Official 2026-10-14 Next.js advisories were reviewed on 2026-10-15. Next.js 16.4.0 was affected by two critical vulnerabilities and one high-severity vulnerability, so the project now uses patched 16.4.1. The production audit has five moderate findings in the Drizzle Kit development-tool chain and no critical/high finding; development servers remain loopback-only.
 
 ## Outstanding owner decisions
 
@@ -67,8 +67,7 @@ See `docs/owner-decisions.md`. Remaining material inputs include any future GitH
 
 ## Next actions
 
-1. Add public project detail routes and sanitized README/content rendering.
-2. Complete mutation authorization and CSRF/origin controls, then add project editing to the admin console.
-3. Add unit/E2E/accessibility tooling and verify the public and admin slices in a real browser.
-4. Add GitHub sync failure alerts, then configure the hosted service secret/schedule only after deployment is authorized.
-5. Recheck the announced Next.js security update on or after 2026-10-14 before any deployment.
+1. Push the Next.js 16.4.1 and CI source-inclusion correction, then require a successful hosted quality run.
+2. Obtain explicit owner authorization for Cloudflare deployment/provider activation.
+3. Configure the protected GitHub `production` environment, Cloudflare/Neon secrets, runtime application secrets, and `PRODUCTION_ORIGIN` without committing credentials.
+4. Run the manual deployment, migrations, smoke checks, first scheduled synchronization, hosted alert receipt, TLS/HSTS check, and provider-level restore evidence.

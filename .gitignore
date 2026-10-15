@@ -4,6 +4,8 @@ node_modules/
 dist/
 out/
 build/
+!apps/portfolio/build/
+!apps/portfolio/build/**
 coverage/
 playwright-report/
 test-results/
