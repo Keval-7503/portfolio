@@ -20,11 +20,12 @@ export async function GET(request: Request) {
       { status: "ready", checks: { database: "ready" } },
       { status: 200, headers: responseHeaders(requestId) },
     );
-  } catch {
+  } catch (error) {
     logEvent("error", "readiness.check", {
       requestId,
       outcome: "unavailable",
       errorCode: "DATABASE_UNAVAILABLE",
+      error,
       latencyMs: Date.now() - startedAt,
     });
     return Response.json(

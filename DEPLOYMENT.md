@@ -1,8 +1,8 @@
 # Deployment Decision and Runbook Outline
 
-Deployment is prepared but remains inactive until the owner configures the GitHub `production` environment, required Cloudflare/Neon secrets, and `PRODUCTION_ORIGIN`. The workflow is manual-only and does not grant itself write access to repository contents.
+The owner-authorized free-tier production deployment is active at `https://verified-portfolio.keval-patel-portfolio.workers.dev`. It uses Cloudflare Workers Free, an R2 bucket enabled under its free allowance, and the existing Neon database. No paid feature was activated. The GitHub `production` environment remains an optional follow-up for repeatable workflow-driven releases; the initial release was performed through authenticated local Wrangler after the same quality, audit, build, migration-state, and smoke gates.
 
-Source repository: `https://github.com/Keval-7503/portfolio`. The first hosted quality run exposed an over-broad ignore rule that omitted required Vite helper source. After including that source and upgrading to Next.js 16.4.1, replacement quality run `38815019371` passed on a clean Ubuntu runner. Deployment remains inactive pending explicit owner authorization and production configuration.
+Source repository: `https://github.com/Keval-7503/portfolio`. The first hosted quality run exposed an over-broad ignore rule that omitted required Vite helper source. After including that source and upgrading to Next.js 16.4.1, replacement quality run `38815019371` passed on a clean Ubuntu runner. Production deployment version `cb854abc-a03d-44ff-a4a5-252df96b7a0e` was followed by a secret-only database correction; readiness and all six public/private smoke checks passed on 2026-10-15.
 
 ## Provider capabilities required
 
@@ -29,6 +29,8 @@ Source repository: `https://github.com/Keval-7503/portfolio`. The first hosted q
 Required secrets: `DATABASE_URL`, `CLOUDFLARE_API_TOKEN`, and `CLOUDFLARE_ACCOUNT_ID`. The Cloudflare token must be scoped only to the target account/Worker resources. Runtime application secrets are managed in Cloudflare rather than copied into build logs. Required environment variable: `PRODUCTION_ORIGIN`.
 
 The manual `.github/workflows/deploy.yml` workflow runs quality, dependency audit, production build, additive migrations, Worker deployment, and public/private smoke checks. Configure environment approval so a deployment cannot begin from an unreviewed click.
+
+Cloudflare string settings are encrypted Worker Secrets. The generated Worker explicitly enables `nodejs_compat_populate_process_env` and the application accepts either Cloudflare's importable environment binding or its supported `process.env` projection. R2 remains a native non-string binding. Three owner-approved documents were copied from local Miniflare storage to private production R2 under their existing opaque keys; byte counts and SHA-256 digests matched after remote retrieval, and temporary transfer files were deleted.
 
 ## Rollback
 

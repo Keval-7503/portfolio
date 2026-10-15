@@ -15,7 +15,7 @@ const managedLinux = readExecutionProfile() === "managed-linux";
 
 const localBindingConfig = {
   main: "./build/sites-worker.ts",
-  compatibility_flags: ["nodejs_compat"],
+  compatibility_flags: ["nodejs_compat", "nodejs_compat_populate_process_env"],
   triggers: {
     // Four runs per day stays comfortably inside Cloudflare's free scheduled-worker allowance.
     crons: ["17 */6 * * *"],

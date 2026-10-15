@@ -1,6 +1,11 @@
 import { env } from "cloudflare:workers";
 import { z } from "zod";
 
+function runtimeString(name: string): string | undefined {
+  const binding = (env as unknown as Record<string, unknown>)[name];
+  return typeof binding === "string" ? binding : process.env[name];
+}
+
 const serverEnvironmentSchema = z.object({
   DATABASE_URL: z.string().url().startsWith("postgresql://"),
 });
@@ -8,7 +13,7 @@ const serverEnvironmentSchema = z.object({
 export type ServerEnvironment = z.infer<typeof serverEnvironmentSchema>;
 
 export function getSiteOrigin(): string {
-  const result = z.string().url().safeParse(env.APP_ORIGIN);
+  const result = z.string().url().safeParse(runtimeString("APP_ORIGIN"));
   if (!result.success) {
     throw new Error("Public site origin is not configured. Set APP_ORIGIN.");
   }
@@ -17,7 +22,7 @@ export function getSiteOrigin(): string {
 
 export function getServerEnvironment(): ServerEnvironment {
   const result = serverEnvironmentSchema.safeParse({
-    DATABASE_URL: env.DATABASE_URL,
+    DATABASE_URL: runtimeString("DATABASE_URL"),
   });
 
   if (!result.success) {
@@ -39,9 +44,9 @@ export type GitHubEnvironment = z.infer<typeof githubEnvironmentSchema>;
 
 export function getGitHubEnvironment(): GitHubEnvironment {
   const result = githubEnvironmentSchema.safeParse({
-    GITHUB_USERNAME: env.GITHUB_USERNAME,
-    GITHUB_ACCOUNT_ID: env.GITHUB_ACCOUNT_ID,
-    GITHUB_TOKEN: env.GITHUB_TOKEN || undefined,
+    GITHUB_USERNAME: runtimeString("GITHUB_USERNAME"),
+    GITHUB_ACCOUNT_ID: runtimeString("GITHUB_ACCOUNT_ID"),
+    GITHUB_TOKEN: runtimeString("GITHUB_TOKEN") || undefined,
   });
 
   if (!result.success) {
@@ -56,7 +61,7 @@ export function getGitHubEnvironment(): GitHubEnvironment {
 const githubSyncSecretSchema = z.string().min(32);
 
 export function getGitHubSyncSecret(): string {
-  const result = githubSyncSecretSchema.safeParse(env.GITHUB_SYNC_SECRET);
+  const result = githubSyncSecretSchema.safeParse(runtimeString("GITHUB_SYNC_SECRET"));
   if (!result.success) {
     throw new Error("GitHub scheduled synchronization is not configured.");
   }
@@ -65,10 +70,10 @@ export function getGitHubSyncSecret(): string {
 
 export function getContactIntegrationEnvironment() {
   return {
-    turnstileSecret: env.TURNSTILE_SECRET_KEY || undefined,
-    turnstileSiteKey: env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || undefined,
-    resendApiKey: env.RESEND_API_KEY || undefined,
-    notificationFrom: env.CONTACT_NOTIFICATION_FROM || undefined,
+    turnstileSecret: runtimeString("TURNSTILE_SECRET_KEY") || undefined,
+    turnstileSiteKey: runtimeString("NEXT_PUBLIC_TURNSTILE_SITE_KEY") || undefined,
+    resendApiKey: runtimeString("RESEND_API_KEY") || undefined,
+    notificationFrom: runtimeString("CONTACT_NOTIFICATION_FROM") || undefined,
   };
 }
 
@@ -99,9 +104,9 @@ export type AuthEnvironment = z.infer<typeof authEnvironmentSchema>;
 
 export function getAuthEnvironment(): AuthEnvironment {
   const result = authEnvironmentSchema.safeParse({
-    APP_ORIGIN: env.APP_ORIGIN,
-    BETTER_AUTH_SECRET: env.BETTER_AUTH_SECRET,
-    ADMIN_EMAIL_ALLOWLIST: env.ADMIN_EMAIL_ALLOWLIST,
+    APP_ORIGIN: runtimeString("APP_ORIGIN"),
+    BETTER_AUTH_SECRET: runtimeString("BETTER_AUTH_SECRET"),
+    ADMIN_EMAIL_ALLOWLIST: runtimeString("ADMIN_EMAIL_ALLOWLIST"),
   });
   if (!result.success) {
     throw new Error(

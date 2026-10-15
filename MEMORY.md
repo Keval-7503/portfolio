@@ -16,7 +16,7 @@ Last updated: 2026-10-15
 
 - Workspace was empty and not a Git repository when inspected.
 - Architecture/requirements documentation was created in the first increment.
-- `apps/portfolio` contains a Cloudflare-compatible Vinext/Next.js TypeScript application with the public site, protected single-owner admin, GitHub synchronization, document/resume lifecycle, contact inbox, and approval-only AI drafting. Neon is connected; no production deployment exists.
+- `apps/portfolio` contains a Cloudflare-compatible Vinext/Next.js TypeScript application with the public site, protected single-owner admin, GitHub synchronization, document/resume lifecycle, contact inbox, and approval-only AI drafting. Free production is active at `https://verified-portfolio.keval-patel-portfolio.workers.dev` using Cloudflare Workers/R2 and Neon.
 - The first responsive public homepage slice is implemented with truthful empty states, a custom favicon, and an original generated workbench robot asset.
 - The owner supplied and public API verification confirmed GitHub login `Keval-7503`, stable account ID `80451128`, and nine public owned repositories on 2026-10-09. The homepage prefers synchronized database records and retains the verified snapshot as a fail-safe.
 - The owner created a Neon database, applied the first migration, and securely verified all five expected tables. The first credential-free GitHub bootstrap sync stored one account, nine repositories, nine published projects, zero missing repositories, and a successful run.
@@ -29,7 +29,8 @@ Last updated: 2026-10-15
 - The runtime now enforces CSP, frame denial, nosniff, referrer and permissions policies, plus private/no-store caching for admin/auth routes. Central helpers reject cross-origin/originless browser mutations and restrict external/provider URLs. HSTS remains intentionally gated on a verified production HTTPS domain; CSP nonce hardening remains.
 - Admin project records now have protected edit pages and a validated same-origin PATCH boundary for owner-controlled title, category, summary, safe Markdown, featured/order, publication, and visibility fields. Anonymous/cross-origin denial and production build passed; authenticated browser save, revisions, and audit records remain.
 - Durable revision and audit tables are now live. Project edits and restores use one database batch to snapshot the previous owner-controlled state, update the record, and append an attributed audit event containing identifiers and changed field names but no content. The editor shows up to 25 revisions and supports guarded restore; an intentional owner edit is still needed for authenticated integrity evidence.
-- The source is published at `https://github.com/Keval-7503/portfolio`. After fixing an over-broad ignore rule and upgrading to Next.js 16.4.1, GitHub Actions quality run `38815019371` passed on a clean Ubuntu runner. Local runtime credentials remain in ignored environment storage and no production deployment exists.
+- The source is published at `https://github.com/Keval-7503/portfolio`. After fixing an over-broad ignore rule and upgrading to Next.js 16.4.1, GitHub Actions quality run `38815019371` passed on a clean Ubuntu runner. Cloudflare stores production values as encrypted Worker Secrets; repository and local secret-scan gates pass.
+- Production database readiness and six-route smoke checks pass. The public résumé returns the expected PDF and all three owner-approved documents were transferred to private R2 with byte-size and SHA-256 verification; transfer temporaries were removed.
 
 ## Architecture decisions
 
@@ -67,6 +68,7 @@ See `docs/owner-decisions.md`. Remaining material inputs include any future GitH
 
 ## Next actions
 
-1. Obtain explicit owner authorization for Cloudflare deployment/provider activation.
-2. Configure the protected GitHub `production` environment, Cloudflare/Neon secrets, runtime application secrets, and `PRODUCTION_ORIGIN` without committing credentials.
-3. Run the manual deployment, migrations, smoke checks, first scheduled synchronization, hosted alert receipt, TLS/HSTS check, and provider-level restore evidence.
+1. Observe and record the first hosted scheduled GitHub synchronization.
+2. Configure an optional generic sync-failure alert destination and verify receipt if the owner supplies one.
+3. Configure the protected GitHub `production` environment for repeatable workflow-driven releases without exposing credentials.
+4. Complete provider-level isolated restore evidence and owner-operated production accessibility checks.
