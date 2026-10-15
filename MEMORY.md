@@ -16,7 +16,7 @@ Last updated: 2026-10-15
 
 - Workspace was empty and not a Git repository when inspected.
 - Architecture/requirements documentation was created in the first increment.
-- `apps/portfolio` contains a Cloudflare-compatible Vinext/Next.js TypeScript application with the public site, protected single-owner admin, GitHub synchronization, document/resume lifecycle, contact inbox, and approval-only AI drafting. Free production is active at `https://verified-portfolio.keval-patel-portfolio.workers.dev` using Cloudflare Workers/R2 and Neon.
+- `apps/portfolio` contains a Cloudflare-compatible Vinext/Next.js TypeScript application with the public site, protected single-owner admin, GitHub synchronization, document/resume lifecycle, contact inbox, and approval-only AI drafting. Free production is active at `https://portfolio.kevalpatel.workers.dev` using Cloudflare Workers/R2 and Neon; the admin entry point is `/admin`.
 - The first responsive public homepage slice is implemented with truthful empty states, a custom favicon, and an original generated workbench robot asset.
 - The owner supplied and public API verification confirmed GitHub login `Keval-7503`, stable account ID `80451128`, and nine public owned repositories on 2026-10-09. The homepage prefers synchronized database records and retains the verified snapshot as a fail-safe.
 - The owner created a Neon database, applied the first migration, and securely verified all five expected tables. The first credential-free GitHub bootstrap sync stored one account, nine repositories, nine published projects, zero missing repositories, and a successful run.

@@ -14,6 +14,7 @@ const isCodexSeatbeltSandbox = process.env.CODEX_SANDBOX === "seatbelt";
 const managedLinux = readExecutionProfile() === "managed-linux";
 
 const localBindingConfig = {
+  name: "portfolio",
   main: "./build/sites-worker.ts",
   compatibility_flags: ["nodejs_compat", "nodejs_compat_populate_process_env"],
   triggers: {
