@@ -2,7 +2,7 @@
 
 Deployment is prepared but remains inactive until the owner configures the GitHub `production` environment, required Cloudflare/Neon secrets, and `PRODUCTION_ORIGIN`. The workflow is manual-only and does not grant itself write access to repository contents.
 
-Source repository: `https://github.com/Keval-7503/portfolio`. The first hosted quality run exposed an over-broad ignore rule that omitted required Vite helper source; the correction and the Next.js 16.4.1 security update must pass hosted CI before deployment is authorized.
+Source repository: `https://github.com/Keval-7503/portfolio`. The first hosted quality run exposed an over-broad ignore rule that omitted required Vite helper source. After including that source and upgrading to Next.js 16.4.1, replacement quality run `38815019371` passed on a clean Ubuntu runner. Deployment remains inactive pending explicit owner authorization and production configuration.
 
 ## Provider capabilities required
 

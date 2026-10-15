@@ -29,7 +29,7 @@ Last updated: 2026-10-15
 - The runtime now enforces CSP, frame denial, nosniff, referrer and permissions policies, plus private/no-store caching for admin/auth routes. Central helpers reject cross-origin/originless browser mutations and restrict external/provider URLs. HSTS remains intentionally gated on a verified production HTTPS domain; CSP nonce hardening remains.
 - Admin project records now have protected edit pages and a validated same-origin PATCH boundary for owner-controlled title, category, summary, safe Markdown, featured/order, publication, and visibility fields. Anonymous/cross-origin denial and production build passed; authenticated browser save, revisions, and audit records remain.
 - Durable revision and audit tables are now live. Project edits and restores use one database batch to snapshot the previous owner-controlled state, update the record, and append an attributed audit event containing identifiers and changed field names but no content. The editor shows up to 25 revisions and supports guarded restore; an intentional owner edit is still needed for authenticated integrity evidence.
-- The source is published at `https://github.com/Keval-7503/portfolio`. The first hosted quality run found required Vite helper source omitted by the root ignore rule; the correction is ready for replacement CI. Local runtime credentials remain in ignored environment storage and no production deployment exists.
+- The source is published at `https://github.com/Keval-7503/portfolio`. After fixing an over-broad ignore rule and upgrading to Next.js 16.4.1, GitHub Actions quality run `38815019371` passed on a clean Ubuntu runner. Local runtime credentials remain in ignored environment storage and no production deployment exists.
 
 ## Architecture decisions
 
@@ -67,7 +67,6 @@ See `docs/owner-decisions.md`. Remaining material inputs include any future GitH
 
 ## Next actions
 
-1. Push the Next.js 16.4.1 and CI source-inclusion correction, then require a successful hosted quality run.
-2. Obtain explicit owner authorization for Cloudflare deployment/provider activation.
-3. Configure the protected GitHub `production` environment, Cloudflare/Neon secrets, runtime application secrets, and `PRODUCTION_ORIGIN` without committing credentials.
-4. Run the manual deployment, migrations, smoke checks, first scheduled synchronization, hosted alert receipt, TLS/HSTS check, and provider-level restore evidence.
+1. Obtain explicit owner authorization for Cloudflare deployment/provider activation.
+2. Configure the protected GitHub `production` environment, Cloudflare/Neon secrets, runtime application secrets, and `PRODUCTION_ORIGIN` without committing credentials.
+3. Run the manual deployment, migrations, smoke checks, first scheduled synchronization, hosted alert receipt, TLS/HSTS check, and provider-level restore evidence.
